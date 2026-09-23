@@ -3,6 +3,7 @@
 Player registration, photo matching, presentation mode, and a live
 4-team auction for the Robic Quest Cup 2026 sports event.
 
+<<<<<<< HEAD
 ## What's in this repo
 
 - `app.html` — page shell: all CSS + static markup, with three
@@ -65,3 +66,8 @@ published Claude artifact, the live sync (`db`) and download
 (`downloads`) features won't be available, since those depend on the
 Claude artifact runtime; the roster browsing, presenter mode, and
 static views work everywhere.
+=======
+--------
+  Jay
+--------
+>>>>>>> 2ef3f21e06e8c4b0031874f73e055fe8022705d7
