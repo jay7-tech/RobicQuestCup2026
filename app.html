@@ -1,0 +1,437 @@
+<title>Robic Quest Cup</title>
+<meta name="description" content="Robic Quest Cup 2026 — player roster, presentation mode and the live 4-team auction.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f5f1; --surface:#ffffff; --surface-2:#ecefe9; --ink:#151812; --muted:#5c6459; --line:#dfe3d9;
+  --accent:#ff5a1f; --accent-ink:#ffffff; --accent-soft:#ffe6da;
+  --good:#1c8f5a; --good-soft:#dff3e8; --warn:#b8790a; --warn-soft:#f8ecd2; --bad:#c23b3b; --bad-soft:#fbe1e1;
+  --shadow: 0 1px 2px rgba(20,22,16,.05), 0 8px 24px -12px rgba(20,22,16,.18);
+  --t-heyars:#2f6fd8; --t-zenith:#b8912b; --t-hoysala:#9a6a2f; --t-phoenix:#e0542b;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101210; --surface:#191c18; --surface-2:#20241f; --ink:#edeee8; --muted:#9aa295; --line:#2b2f28;
+    --accent:#ff7a45; --accent-ink:#171008; --accent-soft:#3a2416;
+    --good:#4fce97; --good-soft:#123322; --warn:#e3ac4c; --warn-soft:#3a2c0e; --bad:#e8716a; --bad-soft:#3a1712;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px -14px rgba(0,0,0,.6);
+    --t-heyars:#6d9bff; --t-zenith:#d8b455; --t-hoysala:#c4934f; --t-phoenix:#ff8259;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101210; --surface:#191c18; --surface-2:#20241f; --ink:#edeee8; --muted:#9aa295; --line:#2b2f28;
+  --accent:#ff7a45; --accent-ink:#171008; --accent-soft:#3a2416;
+  --good:#4fce97; --good-soft:#123322; --warn:#e3ac4c; --warn-soft:#3a2c0e; --bad:#e8716a; --bad-soft:#3a1712;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px -14px rgba(0,0,0,.6);
+  --t-heyars:#6d9bff; --t-zenith:#d8b455; --t-hoysala:#c4934f; --t-phoenix:#ff8259;
+  color-scheme: dark;
+}
+*{box-sizing:border-box;}
+body{ background:var(--bg); color:var(--ink); font-family:'Sora',system-ui,sans-serif; padding-inline:20px; padding-block:22px 60px; max-width:1220px; margin:0 auto; }
+h1,h2,h3{ font-family:'Barlow Condensed',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.02em; margin:0; }
+.mono{ font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; }
+button{ font-family:inherit; }
+
+/* ---------- Header & Tabs ---------- */
+header.top{ display:flex; flex-wrap:wrap; gap:16px 32px; align-items:flex-end; justify-content:space-between; padding-block:4px 16px; border-bottom:1px solid var(--line); margin-bottom:16px; }
+.brand-eyebrow{ font-family:'Barlow Condensed'; font-weight:600; letter-spacing:.14em; font-size:12px; color:var(--accent); text-transform:uppercase; }
+h1.title{ font-size:clamp(26px,4.4vw,38px); font-weight:700; line-height:1; margin-top:3px; }
+.subtitle{ color:var(--muted); font-size:13.5px; margin-top:4px; max-width:50ch; }
+.sync-pill{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:5px 12px; }
+.sync-pill .dot{ width:7px; height:7px; border-radius:50%; background:var(--good); }
+.sync-pill.offline .dot{ background:var(--warn); }
+
+.tabbar{ display:flex; gap:6px; margin-bottom:18px; border-bottom:1px solid var(--line); }
+.tabbtn{ border:none; background:none; padding:10px 16px; font-family:'Barlow Condensed'; font-size:16px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
+.tabbtn.active{ color:var(--ink); border-bottom-color:var(--accent); }
+.tabbtn:hover{ color:var(--ink); }
+.view[hidden]{ display:none; }
+
+/* ---------- Roster ---------- */
+.stat-row{ display:flex; gap:10px; flex-wrap:wrap; }
+.stat{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:9px 15px; min-width:82px; box-shadow:var(--shadow); }
+.stat .n{ font-family:'Barlow Condensed'; font-size:23px; font-weight:700; line-height:1; }
+.stat .l{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-top:3px; }
+
+.controls{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
+.search-box{ position:relative; flex:1 1 220px; max-width:320px; }
+.search-box input{ width:100%; padding:9px 13px 9px 34px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-family:'Sora'; font-size:13.5px; }
+.search-box input:focus{ outline:2px solid var(--accent); outline-offset:-1px; }
+.search-box svg{ position:absolute; left:11px; top:50%; transform:translateY(-50%); width:14px; height:14px; color:var(--muted); }
+.chip-filter{ display:flex; gap:6px; flex-wrap:wrap; }
+.chip{ border:1px solid var(--line); background:var(--surface); color:var(--muted); padding:6px 12px; border-radius:999px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
+.chip:hover{ border-color:var(--accent); color:var(--ink); }
+.chip.active{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.chip.flagged.active{ background:var(--warn); border-color:var(--warn); color:#1a1300;}
+.chip.sold-chip.active{ background:var(--good); border-color:var(--good); color:#04180e; }
+.count-note{ font-size:12px; color:var(--muted); margin:-6px 0 14px; }
+details.dq{ margin-bottom:16px; }
+details.dq summary{ cursor:pointer; font-size:12.5px; color:var(--muted); font-weight:600; }
+.dq-body{ margin-top:10px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 16px; font-size:12.5px; line-height:1.6; color:var(--muted); }
+.dq-body b{ color:var(--ink); }
+
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(224px,1fr)); gap:16px; }
+.card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden; cursor:pointer; box-shadow:var(--shadow); text-align:left; padding:0; color:inherit; display:flex; flex-direction:column; position:relative; transition:transform .12s ease, border-color .12s ease; }
+.card:hover{ transform:translateY(-2px); border-color:var(--accent); }
+.card.is-sold{ opacity:.72; }
+.card .photo-wrap{ aspect-ratio:1/1; background:var(--surface-2); position:relative; overflow:hidden; }
+.card img{ width:100%; height:100%; object-fit:cover; display:block; }
+.card .no-photo{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed'; font-size:34px; font-weight:700; color:var(--muted); background:var(--surface-2); }
+.card .flag{ position:absolute; top:7px; right:7px; background:var(--warn-soft); color:var(--warn); border-radius:999px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; box-shadow:0 1px 3px rgba(0,0,0,.25); }
+.card .sem-tag{ position:absolute; top:7px; left:7px; background:rgba(10,11,9,.65); color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; font-family:'Barlow Condensed'; letter-spacing:.03em; }
+.card .sold-ribbon{ position:absolute; bottom:0; left:0; right:0; padding:5px 9px; font-size:11px; font-weight:700; color:#fff; font-family:'Barlow Condensed'; letter-spacing:.03em; text-transform:uppercase; }
+.card .body{ padding:10px 12px 12px; display:flex; flex-direction:column; gap:4px; flex:1; }
+.card .name{ font-weight:700; font-size:15.5px; line-height:1.22; }
+.card .usn{ font-size:12px; color:var(--muted); }
+.card .sportbar{ margin-top:auto; padding-top:7px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--line); }
+.card .sportcount{ font-size:10.5px; color:var(--ink); font-weight:600; }
+.card .sportcount b{ color:var(--accent); font-family:'Barlow Condensed'; font-size:14px; }
+.dots{ display:flex; gap:2px; }
+.dot{ width:5px; height:5px; border-radius:50%; background:var(--line); }
+.dot.on{ background:var(--accent); }
+.empty-state{ text-align:center; padding:60px 20px; color:var(--muted); }
+.empty-state h3{ text-transform:none; font-family:'Sora'; font-size:16px; margin-bottom:6px; color:var(--ink); }
+
+/* ---------- Modal ---------- */
+.overlay{ position:fixed; inset:0; background:rgba(10,11,9,.55); backdrop-filter:blur(2px); display:flex; align-items:flex-end; justify-content:center; z-index:50; }
+@media (min-width:720px){ .overlay{ align-items:center; padding:24px; } }
+.overlay[hidden]{ display:none; }
+.sheet{ background:var(--surface); width:100%; max-width:600px; max-height:92vh; overflow-y:auto; border-radius:20px 20px 0 0; box-shadow:0 -10px 40px rgba(0,0,0,.3); }
+@media (min-width:720px){ .sheet{ border-radius:20px; } }
+.sheet-head{ display:flex; gap:16px; padding:20px 20px 14px; border-bottom:1px solid var(--line); position:relative; }
+.sheet-photo{ width:92px; height:92px; border-radius:14px; overflow:hidden; background:var(--surface-2); flex-shrink:0; }
+.sheet-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.sheet-photo .no-photo{ width:100%;height:100%; display:flex;align-items:center;justify-content:center; font-family:'Barlow Condensed'; font-size:30px; font-weight:700; color:var(--muted);}
+.sheet-id .name{ font-size:20px; font-weight:700; font-family:'Barlow Condensed'; text-transform:uppercase; line-height:1.05; }
+.sheet-id .usn{ font-family:'IBM Plex Mono'; font-size:12.5px; color:var(--muted); margin-top:5px; }
+.sheet-id .badges{ display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.badge{ font-size:10.5px; font-weight:600; padding:3px 9px; border-radius:999px; }
+.badge.gender{ background:var(--surface-2); color:var(--muted); }
+.badge.verify{ background:var(--warn-soft); color:var(--warn); }
+.badge.sem{ background:var(--surface-2); color:var(--ink); }
+.close-btn{ position:absolute; top:14px; right:14px; width:28px; height:28px; border-radius:50%; background:var(--surface-2); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--ink); }
+.sheet-body{ padding:18px 20px 24px; }
+.section-label{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:600; margin-bottom:10px; }
+.verify-note{ background:var(--warn-soft); color:var(--warn); border-radius:10px; padding:9px 12px; font-size:12.3px; margin-bottom:16px; line-height:1.4; }
+.event-row{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+.event-row:last-child{ border-bottom:none; }
+.event-name{ flex:1; font-size:13.5px; font-weight:500; }
+.meter{ display:flex; gap:3px; }
+.meter .seg{ width:15px; height:8px; border-radius:2px; background:var(--surface-2); }
+.meter .seg.on{ background:var(--accent); }
+.rating-num{ font-family:'Barlow Condensed'; font-weight:700; font-size:16px; width:18px; text-align:right; }
+.summary-strip{ display:flex; gap:16px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }
+.summary-strip .item .n{ font-family:'Barlow Condensed'; font-size:22px; font-weight:700; }
+.summary-strip .item .l{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.sold-banner{ margin-top:16px; border-radius:12px; padding:12px 14px; color:#fff; font-family:'Barlow Condensed'; font-size:15px; font-weight:700; text-transform:uppercase; display:flex; justify-content:space-between; align-items:center; }
+.btn{ font-family:'Sora'; font-weight:600; font-size:13px; padding:9px 16px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; }
+.btn:hover{ border-color:var(--accent); }
+.btn.primary{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+.btn.primary:disabled{ opacity:.4; cursor:not-allowed; }
+.btn.small{ padding:6px 11px; font-size:12px; }
+.btn.ghost{ background:none; }
+.btn.danger{ color:var(--bad); border-color:var(--bad-soft); }
+
+footer{ margin-top:32px; padding-top:14px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+
+/* ---------- Stage ---------- */
+.stage-wrap{ display:flex; flex-direction:column; gap:18px; }
+.stage-nav{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.stage-progress{ font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono'; }
+.stage-navbtns{ display:flex; gap:8px; flex-wrap:wrap; }
+.stage-card{ background:var(--surface); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); overflow:hidden; }
+.stage-top{ display:flex; gap:26px; padding:28px; flex-wrap:wrap; }
+.stage-photo{ width:220px; height:220px; border-radius:18px; overflow:hidden; background:var(--surface-2); flex-shrink:0; }
+.stage-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.stage-photo .no-photo{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed'; font-size:64px; font-weight:700; color:var(--muted); }
+.stage-info{ flex:1; min-width:240px; display:flex; flex-direction:column; gap:10px; }
+.stage-name{ font-size:clamp(28px,5vw,44px); font-weight:700; font-family:'Barlow Condensed'; line-height:1; text-transform:uppercase; text-wrap:balance; }
+.stage-usn{ font-family:'IBM Plex Mono'; font-size:14px; color:var(--muted); }
+.stage-badges{ display:flex; gap:7px; flex-wrap:wrap; margin-top:4px; }
+.stage-events{ padding:0 28px 26px; }
+.stage-events .grid2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px 22px; }
+
+.bid-panel{ border-top:1px solid var(--line); padding:24px 28px 28px; background:var(--surface-2); }
+.bid-amount-row{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:16px; }
+.bid-amount{ font-family:'Barlow Condensed'; font-size:56px; font-weight:700; min-width:120px; text-align:center; }
+.bid-amount .u{ font-size:18px; color:var(--muted); margin-left:6px; text-transform:none; }
+.stepbtn{ width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--surface); font-size:22px; font-weight:700; cursor:pointer; color:var(--ink); }
+.stepbtn:hover{ border-color:var(--accent); }
+.quickbids{ display:flex; gap:8px; justify-content:center; margin-bottom:22px; }
+.quickbids button{ border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:6px 13px; font-size:12px; font-weight:700; cursor:pointer; color:var(--ink); }
+.quickbids button:hover{ border-color:var(--accent); }
+.team-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:20px; }
+.team-btn{ border:2px solid var(--line); background:var(--surface); border-radius:13px; padding:12px 14px; text-align:left; cursor:pointer; display:flex; flex-direction:column; gap:4px; }
+.team-btn .tname{ font-family:'Barlow Condensed'; font-weight:700; font-size:16px; letter-spacing:.02em; }
+.team-btn .tpurse{ font-family:'IBM Plex Mono'; font-size:12.5px; color:var(--muted); }
+.team-btn.selected{ border-color:var(--accent); background:var(--accent-soft); }
+.team-btn:disabled{ opacity:.4; cursor:not-allowed; }
+.sell-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.sell-row .btn{ padding:13px 26px; font-size:15px; }
+.stage-sold-banner{ margin:24px 28px 28px; border-radius:14px; padding:18px 20px; color:#fff; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.stage-sold-banner .big{ font-family:'Barlow Condensed'; font-size:26px; font-weight:700; text-transform:uppercase; }
+.stage-sold-banner .price{ font-family:'IBM Plex Mono'; font-size:20px; }
+
+/* ---------- Teams ---------- */
+.teams-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+.team-card{ background:var(--surface); border:1px solid var(--line); border-top:5px solid var(--tc,var(--accent)); border-radius:16px; box-shadow:var(--shadow); padding:18px 18px 16px; }
+.team-card h3{ font-size:22px; font-family:'Barlow Condensed'; }
+.team-purse-row{ display:flex; justify-content:space-between; align-items:baseline; margin:8px 0 14px; }
+.team-purse-row .n{ font-family:'Barlow Condensed'; font-size:30px; font-weight:700; }
+.team-purse-row .l{ font-size:11px; color:var(--muted); text-transform:uppercase; }
+.team-players{ display:flex; flex-direction:column; gap:8px; max-height:340px; overflow-y:auto; }
+.team-player-row{ display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--line); }
+.team-player-row img,.team-player-row .ph{ width:34px; height:34px; border-radius:8px; object-fit:cover; background:var(--surface-2); flex-shrink:0; }
+.team-player-row .ph{ display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--muted); font-family:'Barlow Condensed'; }
+.team-player-row .tpn{ flex:1; font-size:12.8px; font-weight:600; }
+.team-player-row .tpp{ font-family:'IBM Plex Mono'; font-size:12px; color:var(--muted); }
+.team-player-row button{ border:none; background:none; color:var(--bad); cursor:pointer; font-size:11px; }
+.empty-team{ font-size:12.5px; color:var(--muted); padding:10px 0; }
+.teams-summary{ display:flex; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.team-card .tc-head{ display:flex; align-items:center; gap:10px; }
+.team-logo{ width:38px; height:38px; border-radius:10px; overflow:hidden; background:#0b0c0a; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.team-logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.team-btn .tb-head{ display:flex; align-items:center; gap:9px; }
+.team-btn .team-logo{ width:30px; height:30px; border-radius:8px; }
+.tabbtn .team-logo{ display:none; }
+
+/* ---------- Role gate ---------- */
+.role-overlay{ position:fixed; inset:0; background:var(--bg); z-index:200; display:flex; align-items:center; justify-content:center; padding:24px; }
+.role-overlay[hidden]{ display:none; }
+.role-box{ max-width:440px; width:100%; background:var(--surface); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); padding:28px 26px; }
+.role-box h2{ font-size:26px; margin-bottom:4px; }
+.role-box .rb-sub{ color:var(--muted); font-size:13px; margin-bottom:20px; }
+.role-list{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.role-opt{ border:2px solid var(--line); background:var(--surface-2); border-radius:13px; padding:12px; text-align:left; cursor:pointer; display:flex; align-items:center; gap:10px; }
+.role-opt:hover{ border-color:var(--accent); }
+.role-opt.selected{ border-color:var(--accent); background:var(--accent-soft); }
+.role-opt .rname{ font-family:'Barlow Condensed'; font-weight:700; font-size:15px; }
+.role-pin-row{ display:none; gap:10px; margin-top:6px; }
+.role-pin-row.show{ display:flex; }
+.role-pin-row input{ flex:1; padding:11px 13px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-family:'IBM Plex Mono'; font-size:16px; letter-spacing:.15em; }
+.role-error{ color:var(--bad); font-size:12.5px; margin-top:8px; display:none; }
+.role-error.show{ display:block; }
+.role-pill{ display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:5px 10px 5px 6px; }
+.role-pill .team-logo{ width:20px; height:20px; border-radius:6px; }
+.role-pill button{ border:none; background:none; color:var(--muted); font-size:11px; cursor:pointer; text-decoration:underline; }
+
+/* ---------- Presenter ---------- */
+.presenter-wrap{ display:flex; flex-direction:column; gap:16px; }
+.presenter-topbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.presenter-jump{ display:flex; gap:8px; align-items:center; }
+.presenter-jump input{ padding:8px 12px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-size:13px; width:200px; }
+.pcard{ background:var(--surface); border:1px solid var(--line); border-radius:26px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-wrap:wrap; }
+.pcard .p-photo{ width:340px; max-width:100%; aspect-ratio:1/1; background:var(--surface-2); flex-shrink:0; }
+.pcard .p-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.pcard .p-photo .no-photo{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed'; font-size:96px; font-weight:700; color:var(--muted); }
+.pcard .p-info{ flex:1; min-width:260px; padding:32px; display:flex; flex-direction:column; gap:14px; justify-content:center; }
+.pcard .p-name{ font-size:clamp(34px,6vw,58px); font-weight:700; font-family:'Barlow Condensed'; line-height:1; text-transform:uppercase; text-wrap:balance; }
+.pcard .p-usn{ font-family:'IBM Plex Mono'; font-size:16px; color:var(--muted); }
+.pcard .p-badges{ display:flex; gap:8px; flex-wrap:wrap; }
+.pcard .p-events{ margin-top:6px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:8px 24px; }
+.presenter-nav{ display:flex; justify-content:center; gap:12px; }
+.presenter-nav .btn{ padding:14px 30px; font-size:16px; }
+.readonly-note{ background:var(--surface-2); border:1px dashed var(--line); border-radius:12px; padding:14px 16px; font-size:13px; color:var(--muted); text-align:center; }
+.presenter-filters{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.presenter-jump{ position:relative; }
+.presenter-suggest{ position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--surface); border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); max-height:260px; overflow-y:auto; z-index:30; }
+.presenter-suggest[hidden]{ display:none; }
+.presenter-suggest button{ width:100%; text-align:left; padding:9px 12px; border:none; background:none; cursor:pointer; color:var(--ink); font-size:12.8px; display:flex; justify-content:space-between; gap:8px; border-bottom:1px solid var(--line); }
+.presenter-suggest button:last-child{ border-bottom:none; }
+.presenter-suggest button:hover{ background:var(--surface-2); }
+.presenter-suggest .ps-usn{ color:var(--muted); font-family:'IBM Plex Mono'; font-size:11px; }
+.p-sold-badge{ display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:5px 13px 5px 6px; color:#fff; font-family:'Barlow Condensed'; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.03em; width:fit-content; }
+.p-sold-badge img{ width:22px; height:22px; border-radius:6px; object-fit:cover; }
+.p-unsold-badge{ display:inline-flex; width:fit-content; background:var(--surface-2); color:var(--muted); border-radius:999px; padding:5px 13px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
+
+/* ---------- Summary ---------- */
+.summary-grid{ display:flex; flex-direction:column; gap:22px; }
+.summary-team{ background:var(--surface); border:1px solid var(--line); border-top:5px solid var(--tc,var(--accent)); border-radius:16px; box-shadow:var(--shadow); padding:18px 18px 20px; }
+.summary-team-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.summary-team-head h3{ font-size:22px; font-family:'Barlow Condensed'; }
+.summary-team-cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+.summary-card{ background:var(--surface-2); border:1px solid var(--line); border-radius:12px; overflow:hidden; text-align:center; }
+.summary-card .sc-photo{ aspect-ratio:1/1; background:var(--surface); }
+.summary-card .sc-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.summary-card .sc-photo .no-photo{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed'; font-size:26px; font-weight:700; color:var(--muted); }
+.summary-card .sc-body{ padding:8px 9px 10px; }
+.summary-card .sc-name{ font-size:12.5px; font-weight:700; line-height:1.2; }
+.summary-card .sc-meta{ font-size:10.5px; color:var(--muted); margin-top:3px; font-family:'IBM Plex Mono'; }
+
+/* ---------- Export ---------- */
+.export-overlay{ position:fixed; inset:0; background:rgba(10,11,9,.55); backdrop-filter:blur(2px); display:flex; align-items:flex-end; justify-content:center; z-index:100; }
+@media (min-width:720px){ .export-overlay{ align-items:center; padding:24px; } }
+.export-overlay[hidden]{ display:none; }
+.export-box{ background:var(--surface); width:100%; max-width:520px; max-height:92vh; overflow-y:auto; border-radius:20px 20px 0 0; box-shadow:0 -10px 40px rgba(0,0,0,.3); }
+@media (min-width:720px){ .export-box{ border-radius:20px; } }
+.export-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--line); }
+.export-head h2{ font-size:22px; }
+.export-body{ padding:18px 20px; display:flex; flex-direction:column; gap:18px; }
+.exp-section .section-label{ margin-bottom:8px; }
+.exp-select{ width:100%; padding:10px 12px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-family:'Sora'; font-size:13.5px; }
+.exp-radio-row{ display:flex; gap:16px; flex-wrap:wrap; font-size:13px; }
+.exp-radio-row label{ display:flex; align-items:center; gap:6px; cursor:pointer; }
+.exp-fields{ display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; }
+.exp-fields label{ display:flex; align-items:center; gap:7px; font-size:12.8px; cursor:pointer; }
+.exp-fields input[disabled] + span{ color:var(--muted); }
+.exp-count{ font-size:12px; color:var(--muted); }
+.export-foot{ display:flex; justify-content:flex-end; gap:10px; padding:14px 20px 20px; border-top:1px solid var(--line); }
+</style>
+
+<header class="top">
+  <div>
+    <div class="brand-eyebrow">Player Selection — All Semesters</div>
+    <h1 class="title">Robic Quest Cup 2026</h1>
+    <p class="subtitle">Registration roster matched to photos, presentation mode, and the live 4-team auction.</p>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+    <div style="display:flex; gap:8px; align-items:center;">
+      <div class="role-pill" id="rolePill"></div>
+      <div class="sync-pill" id="syncPill"><span class="dot"></span><span id="syncText">Connecting…</span></div>
+      <button class="btn small" id="exportBtn">⬇ Export</button>
+    </div>
+    <div class="stat-row" id="statRow"></div>
+  </div>
+</header>
+
+<nav class="tabbar">
+  <button class="tabbtn active" data-tab="roster">Roster</button>
+  <button class="tabbtn" data-tab="stage">Auction Stage</button>
+  <button class="tabbtn" data-tab="teams">Teams</button>
+  <button class="tabbtn" data-tab="summary">Summary</button>
+  <button class="tabbtn" data-tab="presenter">Presenter</button>
+</nav>
+
+<!-- ================= ROSTER VIEW ================= -->
+<section class="view" id="view-roster">
+  <div class="controls">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" placeholder="Search by name or USN…" autocomplete="off">
+    </div>
+    <div class="chip-filter" id="semFilters"></div>
+    <div class="chip-filter" id="sportFilters"></div>
+  </div>
+  <p class="count-note" id="countNote"></p>
+  <details class="dq">
+    <summary>Data quality notes (photo matching &amp; form issues)</summary>
+    <div class="dq-body" id="dqBody"></div>
+  </details>
+  <div class="grid" id="grid"></div>
+  <div class="empty-state" id="emptyState" hidden>
+    <h3>No players match this filter</h3>
+    <p>Try clearing the search or picking a different filter.</p>
+  </div>
+</section>
+
+<!-- ================= STAGE VIEW ================= -->
+<section class="view" id="view-stage" hidden>
+  <div class="stage-wrap">
+    <div class="stage-nav">
+      <div class="stage-progress" id="stageProgress"></div>
+      <div class="stage-navbtns">
+        <button class="btn" id="btnPrev">&larr; Prev</button>
+        <button class="btn" id="btnNextUnsold">Next unsold &#8594;&#8594;</button>
+        <button class="btn primary" id="btnNext">Next &rarr;</button>
+      </div>
+    </div>
+    <div class="stage-card" id="stageCard"></div>
+  </div>
+</section>
+
+<!-- ================= TEAMS VIEW ================= -->
+<section class="view" id="view-teams" hidden>
+  <div class="teams-summary" id="teamsSummary"></div>
+  <div class="teams-grid" id="teamsGrid"></div>
+</section>
+
+<!-- ================= SUMMARY VIEW ================= -->
+<section class="view" id="view-summary" hidden>
+  <div class="summary-grid" id="summaryGrid"></div>
+</section>
+
+<!-- ================= PRESENTER VIEW ================= -->
+<section class="view" id="view-presenter" hidden>
+  <div class="presenter-wrap">
+    <div class="presenter-filters">
+      <div class="chip-filter" id="presSemFilters"></div>
+      <div class="chip-filter" id="presStatusFilters"></div>
+    </div>
+    <div class="presenter-topbar">
+      <div class="stage-progress" id="presProgress"></div>
+      <div class="presenter-jump">
+        <input type="text" id="presJump" placeholder="Jump to name or USN…" autocomplete="off">
+        <div class="presenter-suggest" id="presSuggest" hidden></div>
+      </div>
+    </div>
+    <div class="pcard" id="presCard"></div>
+    <div class="presenter-nav">
+      <button class="btn" id="presPrev">&larr; Prev</button>
+      <button class="btn primary" id="presNext">Next &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Robic Quest Cup 2026 · Combined Player Registration &amp; Live Auction</span>
+  <span id="verifyFooterNote"></span>
+</footer>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+</div>
+
+<div class="role-overlay" id="roleOverlay" hidden>
+  <div class="role-box">
+    <h2>Who's this?</h2>
+    <p class="rb-sub">Pick your role for this device. Admin and each team need a PIN — ask the organiser.</p>
+    <div class="role-list" id="roleList"></div>
+    <div class="role-pin-row" id="rolePinRow">
+      <input type="password" inputmode="numeric" maxlength="4" id="rolePinInput" placeholder="PIN">
+      <button class="btn primary" id="roleConfirmBtn">Continue</button>
+    </div>
+    <div class="role-error" id="roleError">Wrong PIN — try again.</div>
+  </div>
+</div>
+
+<div class="export-overlay" id="exportOverlay" hidden>
+  <div class="export-box">
+    <div class="export-head">
+      <h2>Export players</h2>
+      <button class="close-btn" id="exportCloseBtn" aria-label="Close">✕</button>
+    </div>
+    <div class="export-body">
+      <div class="exp-section">
+        <div class="section-label">Which players?</div>
+        <select class="exp-select" id="exportScope"></select>
+      </div>
+      <div class="exp-section">
+        <div class="section-label">Format</div>
+        <div class="exp-radio-row">
+          <label><input type="radio" name="exportFormat" value="info" checked> Only info (CSV file)</label>
+          <label><input type="radio" name="exportFormat" value="image"> Image + info (HTML page)</label>
+        </div>
+      </div>
+      <div class="exp-section">
+        <div class="section-label">Fields to include</div>
+        <div class="exp-fields" id="exportFields"></div>
+      </div>
+      <div class="exp-count" id="exportCount"></div>
+    </div>
+    <div class="export-foot">
+      <button class="btn" id="exportCancelBtn">Cancel</button>
+      <button class="btn primary" id="exportDownloadBtn">Download</button>
+    </div>
+  </div>
+</div>
+
+<script id="roster-data" type="application/json">__ROSTER_JSON__</script>
+<script id="notes-data" type="application/json">__NOTES_JSON__</script>
+<script id="logos-data" type="application/json">__LOGOS_JSON__</script>
+<script>
+window.__APP_JS_PLACEHOLDER__ = true;
+</script>

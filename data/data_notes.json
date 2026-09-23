@@ -1,0 +1,90 @@
+{
+  "orphan_photos": {
+    "1": [
+      "Abhinav Sanjay Ds",
+      "Roopa",
+      "Suva Devi",
+      "Eden Shu"
+    ],
+    "5": [
+      "Ash Wick",
+      "Vasudaa (duplicate upload, unclear whose)",
+      "Hmm I See (unnamed upload)"
+    ],
+    "7": [
+      "Viinith VHKDS",
+      "Shabri 165"
+    ]
+  },
+  "missing_photo": {
+    "1": [
+      [
+        "Glaval Vlenishia Pinto",
+        "26BITRAI0064"
+      ],
+      [
+        "Nikshitha K",
+        "26BITRAI0057"
+      ],
+      [
+        "Tejas A",
+        "26BITRAI0013"
+      ],
+      [
+        "Vikram Anjana",
+        "26BITRAI0035"
+      ],
+      [
+        "Zaid Rahamath",
+        "55.0"
+      ]
+    ],
+    "3": [
+      [
+        "Anushree HC",
+        "1BI35R1009"
+      ]
+    ],
+    "5": [
+      [
+        "Abhay Talawar",
+        "1BI24RI001"
+      ],
+      [
+        "Ronak M",
+        "1BI24RI044"
+      ]
+    ],
+    "7": [
+      [
+        "Atharva",
+        "07"
+      ],
+      [
+        "Poorvika",
+        "1BI23RI035"
+      ],
+      [
+        "Shreya R",
+        "1BI23RI046"
+      ]
+    ]
+  },
+  "bad_usn": [
+    [
+      "Zaid Rahamath",
+      "55.0",
+      1
+    ],
+    [
+      "Sai Prasad",
+      "IBI24RI061",
+      5
+    ],
+    [
+      "Atharva",
+      "07",
+      7
+    ]
+  ]
+}
