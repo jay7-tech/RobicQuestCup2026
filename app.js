@@ -727,12 +727,60 @@
     var el = document.getElementById('exportCount');
     if (el) el.textContent = msg;
   }
+  function buildPdf(players, fields){
+    if (!window.jspdf || !window.jspdf.jsPDF || !window.autoTable){
+      throw new Error('pdf_lib_unavailable');
+    }
+    var doc = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    doc.setFontSize(16);
+    doc.text('Robic Quest Cup 2026', 40, 32);
+    doc.setFontSize(10);
+    doc.setTextColor(120);
+    doc.text('Exported ' + new Date().toLocaleString() + ' · ' + players.length + ' player' + (players.length===1?'':'s'), 40, 48);
+    doc.setTextColor(0);
+
+    var infoFields = fields.filter(function(f){ return f.key !== 'name'; });
+    var head = [['Photo', 'Name'].concat(infoFields.map(function(f){ return f.label; }))];
+    var body = players.map(function(p){
+      return [''].concat([p.name]).concat(infoFields.map(function(f){
+        var v = fieldValue(p, f.key);
+        return (v===undefined||v===null) ? '' : String(v);
+      }));
+    });
+
+    window.autoTable(doc, {
+      startY: 62,
+      head: head,
+      body: body,
+      styles: { fontSize: 8.5, cellPadding: 6, valign: 'middle', minCellHeight: 46, overflow: 'linebreak' },
+      headStyles: { fillColor: [21, 24, 18], textColor: 255, fontStyle: 'bold' },
+      alternateRowStyles: { fillColor: [244, 245, 241] },
+      columnStyles: { 0: { cellWidth: 46 } },
+      margin: { left: 40, right: 40 },
+      rowPageBreak: 'avoid',
+      didDrawCell: function(data){
+        if (data.column.index === 0 && data.section === 'body'){
+          var p = players[data.row.index];
+          var pad = 4;
+          var size = Math.min(data.cell.height, data.cell.width) - pad * 2;
+          var x = data.cell.x + (data.cell.width - size) / 2;
+          var y = data.cell.y + pad;
+          if (p && p.photo){
+            try { doc.addImage(p.photo, 'JPEG', x, y, size, size); } catch(e){ /* skip a photo jsPDF can't decode */ }
+          }
+        }
+      }
+    });
+
+    return doc.output('blob');
+  }
+
   function triggerDownload(filename, mime, content){
     if (!downloadsHandle){
       setExportStatus('Downloads aren\'t available in this view right now — try again in a moment.');
       return;
     }
-    var blob = new Blob([content], { type: mime });
+    var blob = (content instanceof Blob) ? content : new Blob([content], { type: mime });
     downloadsHandle.save({ filename: filename, data: blob }).then(function(){
       setExportStatus('Saved ' + filename + '.');
     }).catch(function(err){
@@ -782,6 +830,13 @@
     setExportStatus('Preparing download…');
     if (format === 'info'){
       triggerDownload('rqc2026_export_'+stamp+'.csv', 'text/csv;charset=utf-8', buildCsv(players, fields));
+    } else if (format === 'pdf'){
+      try {
+        var pdfBlob = buildPdf(players, fields);
+        triggerDownload('rqc2026_export_'+stamp+'.pdf', 'application/pdf', pdfBlob);
+      } catch(e){
+        setExportStatus('PDF export isn\'t available right now — try the HTML or CSV option instead.');
+      }
     } else {
       triggerDownload('rqc2026_export_'+stamp+'.html', 'text/html;charset=utf-8', buildImageHtml(players, fields));
     }

@@ -11,7 +11,8 @@ Player registration, photo matching, presentation mode, and a live
 - `app.js` — all client-side logic: roster browsing, role/PIN access
   (Admin / per-team / viewer), the live auction "Stage" (bidding &
   selling), the "Teams" and "Summary" views, the customizable
-  export/download feature, and the Presenter mode.
+  export/download feature (CSV, an image+info HTML page, or a table
+  PDF with embedded photos), and the Presenter mode.
 - `data/roster_all.json` — the 144-player roster (all 4 semesters),
   each with name, USN, semester, gender, embedded photo (base64
   data URI), selected sports + self-ratings, and a photo-match
@@ -22,9 +23,12 @@ Player registration, photo matching, presentation mode, and a live
   orphan photos, malformed USNs) shown in the Roster tab.
 - `data/team_logos.json` — base64-embedded logos for the 4 teams
   (Heyars, Zenith X, Hoysala, Phoenix).
-- `build.py` — merges `app.html` + `app.js` + the three data files
-  into one self-contained `dist/final_app.html` you can open directly
-  in a browser or host anywhere.
+- `jspdf.umd.min.js`, `jspdf.autotable.min.js` — the bundled
+  open-source libraries (MIT licensed) that generate the PDF export
+  entirely client-side, with no external network calls.
+- `build.py` — merges `app.html` + `app.js` + the two PDF libraries +
+  the three data files into one self-contained `dist/final_app.html`
+  you can open directly in a browser or host anywhere.
 - `dist/final_app.html` — a pre-built copy of the merged page (the
   same content that's live on the published Claude artifact), kept
   here as a safety backup so the data is never only in one place.

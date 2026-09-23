@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Rebuilds the merged, publishable HTML page (dist/final_app.html) from the
-source template (app.html), the JS logic (app.js), and the three data
+source template (app.html), the JS logic (app.js), the two bundled PDF
+libraries (jspdf.umd.min.js, jspdf.autotable.min.js), and the three data
 files under data/.
 
 Usage:
@@ -16,6 +17,8 @@ ROOT = pathlib.Path(__file__).parent
 
 html = (ROOT / "app.html").read_text(encoding="utf-8")
 js = (ROOT / "app.js").read_text(encoding="utf-8")
+jspdf_js = (ROOT / "jspdf.umd.min.js").read_text(encoding="utf-8")
+autotable_js = (ROOT / "jspdf.autotable.min.js").read_text(encoding="utf-8")
 roster_json = (ROOT / "data" / "roster_all.json").read_text(encoding="utf-8")
 notes_json = (ROOT / "data" / "data_notes.json").read_text(encoding="utf-8")
 logos_json = (ROOT / "data" / "team_logos.json").read_text(encoding="utf-8")
@@ -29,6 +32,14 @@ out = (
     html.replace("__ROSTER_JSON__", roster_json)
         .replace("__NOTES_JSON__", notes_json)
         .replace("__LOGOS_JSON__", logos_json)
+)
+out = out.replace(
+    "<script>\nwindow.__JSPDF_JS_PLACEHOLDER__ = true;\n</script>",
+    "<script>\n" + jspdf_js + "\n</script>",
+)
+out = out.replace(
+    "<script>\nwindow.__AUTOTABLE_JS_PLACEHOLDER__ = true;\n</script>",
+    "<script>\n" + autotable_js + "\n</script>",
 )
 out = out.replace(
     "<script>\nwindow.__APP_JS_PLACEHOLDER__ = true;\n</script>",

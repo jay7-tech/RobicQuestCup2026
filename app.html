@@ -414,6 +414,7 @@ footer{ margin-top:32px; padding-top:14px; border-top:1px solid var(--line); fon
         <div class="exp-radio-row">
           <label><input type="radio" name="exportFormat" value="info" checked> Only info (CSV file)</label>
           <label><input type="radio" name="exportFormat" value="image"> Image + info (HTML page)</label>
+          <label><input type="radio" name="exportFormat" value="pdf"> Table with images (PDF)</label>
         </div>
       </div>
       <div class="exp-section">
@@ -432,6 +433,12 @@ footer{ margin-top:32px; padding-top:14px; border-top:1px solid var(--line); fon
 <script id="roster-data" type="application/json">__ROSTER_JSON__</script>
 <script id="notes-data" type="application/json">__NOTES_JSON__</script>
 <script id="logos-data" type="application/json">__LOGOS_JSON__</script>
+<script>
+window.__JSPDF_JS_PLACEHOLDER__ = true;
+</script>
+<script>
+window.__AUTOTABLE_JS_PLACEHOLDER__ = true;
+</script>
 <script>
 window.__APP_JS_PLACEHOLDER__ = true;
 </script>
